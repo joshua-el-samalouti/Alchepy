@@ -5,13 +5,11 @@ import localization as loc
 
 
 def new_game():
-    for element in loc.available_languages:
-        print(element[0], ': ', element[1])
-    lang = input()
+    lang = lang_select()
     # Add Module Select Here
-    title, description, elements, recipes = loader('placeholder', lang)
-    print(title)
-    print(description)
+    data = loader('placeholder', lang)
+    print(data['title'])
+    print(data['description'])
 
     while True:
         command = input()
@@ -21,7 +19,11 @@ def new_game():
         try:
             {'add': add,
              'info': info,
-             'quit': quit_app}[keyword](expression)
+             'quit': quit_app,
+             'help': helper,
+             'list': list_group,
+             'groups': groups,
+             'stats': stats}[keyword](expression, data)
         except KeyError:
             print('Invalid command')
 
@@ -36,14 +38,41 @@ def checker():
     return placeholder_checker()
 
 
-def add(expression):
-    print('add')
-    print(expression)
+def add(expression, data, lang):
+    print('WIP')
 
 
-def info(expression):
-    print('info')
+def info(expression, data, lang):
+    print('WIP')
 
 
-def quit_app(expression):
+def quit_app(expression, data, lang):
     sys.exit()
+
+
+def helper(expression, data, lang):
+    print(loc.help_menu[lang])
+
+
+def list_group(expression, data, lang):
+    print('WIP')
+
+
+def stats(expression, data, lang):
+    print('WIP')
+
+
+def groups(expression, data, lang):
+    print('WIP')
+
+
+def lang_select():
+    for element in loc.available_languages:
+        print(element[0], ': ', element[1])
+    while True:
+        selection = input()
+        if selection in [lang[1] for lang in loc.available_languages]:
+            return selection
+        else:
+            print('invalid selection')
+

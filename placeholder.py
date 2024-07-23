@@ -5,6 +5,7 @@ import localization as loc
 def placeholder_loader(lang):
     title = loc.placeholder_title[lang]
     description = loc.placeholder_description[lang]
+    info = loc.placeholder_info[lang]
     elements = pd.DataFrame([
         ['Fire', 'Energy', True],
         ['Water', 'Liquids', True],
@@ -17,7 +18,11 @@ def placeholder_loader(lang):
         ['Fire', 'Water', ['Steam'], True]
     ],
         columns=['input_1', 'input_2', 'output', 'discovered'])
-    return title, description, elements, recipes
+    return {'title': title,
+            'description': description,
+            'elements': elements,
+            'recipes': recipes,
+            'info': info}
 
 
 def placeholder_checker():
