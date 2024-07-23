@@ -14,16 +14,17 @@ def new_game():
     while True:
         command = input()
         keyword = re.search('\S+', command).group().strip()
-        expression = re.search(f'(?<={keyword}\s)\S.*', command).group().strip()
-        print(keyword)
+        expression = re.search(f'(?<={keyword}\s)\S.*', command)
+        if expression:
+            expression = expression.group().strip()
         try:
-            {'add': add,
-             'info': info,
-             'quit': quit_app,
-             'help': helper,
-             'list': list_group,
-             'groups': groups,
-             'stats': stats}[keyword](expression, data)
+            data = {'add': add,
+                    'info': info,
+                    'quit': quit_app,
+                    'help': helper,
+                    'list': list_group,
+                    'groups': groups,
+                    'stats': stats}[keyword](expression, data, lang)
         except KeyError:
             print('Invalid command')
 
@@ -40,10 +41,12 @@ def checker():
 
 def add(expression, data, lang):
     print('WIP')
+    return data
 
 
 def info(expression, data, lang):
-    print('WIP')
+    print(data['info'])
+    return data
 
 
 def quit_app(expression, data, lang):
@@ -52,18 +55,24 @@ def quit_app(expression, data, lang):
 
 def helper(expression, data, lang):
     print(loc.help_menu[lang])
+    return data
 
 
 def list_group(expression, data, lang):
     print('WIP')
+    return data
 
 
 def stats(expression, data, lang):
     print('WIP')
+    return data
 
 
 def groups(expression, data, lang):
-    print('WIP')
+    print('Groups:\n')
+    for group in data['elements'].loc[data['elements']['unlocked']]['group'].unique():
+        print(group)
+    return data
 
 
 def lang_select():

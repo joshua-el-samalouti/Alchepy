@@ -9,7 +9,7 @@ placeholder_description = {'en': 'Placeholder description',
 placeholder_info = {'en': 'Placeholder info',
                     'de': 'Platzhalterinformation'}
 
-help_menu = {'en': """Help Menu\n\n
+help_menu = {'en': """\nHelp Menu:\n
 WIP""",
-             'de': """Hilfsmenü\n\n
+             'de': """\nHilfsmenü:\n
              WIP"""}
