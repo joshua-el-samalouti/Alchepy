@@ -71,8 +71,11 @@ def add(argument, data, lang):
                 temp_recipes = data['recipes']
                 temp_recipes.loc[(data['recipes'][first] == input_elements[0]) &
                                  (data['recipes'][second] == input_elements[1]), 'discovered'] = True
+                temp_elements = data['elements']
+                for element in match['output'][0]:
+                    temp_elements.loc[data['elements']['name'] == element, 'unlocked'] = True
                 data['recipes'] = temp_recipes
-                print(data)
+                data['elements'] = temp_elements
         if len(match) == 0:
             print(loc.nothing_happened[lang])
     elif len(input_elements) > 2:
