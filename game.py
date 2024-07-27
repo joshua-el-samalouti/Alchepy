@@ -1,12 +1,16 @@
 import re
 import sys
+import warnings
 from placeholder import *
 import localization as loc
+import options as opt
 
 
 def new_game():
+    if not opt.warnings:
+        warnings.filterwarnings("ignore")
     lang = lang_select()
-    # Add Module Select Here
+    # TODO: Add Module Select Here
     data = loader('placeholder', lang)
     print(data['title'])
     print(data['description'])
@@ -24,9 +28,10 @@ def new_game():
                     'help': helper,
                     'list': list_group,
                     'groups': groups,
+                    'options': options,
                     'stats': stats}[keyword](argument, data, lang)
         except KeyError:
-            print('Invalid command')
+            print(loc.invalid_command[lang])
 
     pass
 
@@ -40,12 +45,48 @@ def checker():
 
 
 def add(argument, data, lang):
-    print('WIP')
+    input_elements = re.split(r'\s\+\s', argument)
+    input_elements = [element.strip() for element in input_elements]
+    if len(input_elements) < 2:
+        print(loc.too_little_elements[lang])
+    elif len(input_elements) == 2:
+        match = data['recipes'][data['recipes']['input_1'] == input_elements[0]]\
+            [data['recipes']['input_2'] == input_elements[1]]
+        if len(match) == 1:
+            first = 'input_1'
+            second = 'input_2'
+        if len(match) == 0:
+            match = data['recipes'][data['recipes']['input_1'] == input_elements[1]]\
+                [data['recipes']['input_2'] == input_elements[0]]
+            if len(match) == 1:
+                first = 'input_2'
+                second = 'input_1'
+        if len(match) == 1:
+            if match['discovered'][0] and opt.disable_discovered_combinations:
+                print(loc.nothing_happened[lang])
+            else:
+                if not match['discovered'][0]:
+                    print('*NEW COMBINATION*')
+                print(f'{match["input_1"][0]} + {match["input_2"][0]} = {match["output"][0]}')
+                temp_recipes = data['recipes']
+                temp_recipes.loc[(data['recipes'][first] == input_elements[0]) &
+                                 (data['recipes'][second] == input_elements[1]), 'discovered'] = True
+                data['recipes'] = temp_recipes
+                print(data)
+        if len(match) == 0:
+            print(loc.nothing_happened[lang])
+    elif len(input_elements) > 2:
+        print(loc.too_many_elements[lang])
     return data
 
 
 def info(argument, data, lang):
     print(data['info'])
+    return data
+
+
+def options(argument, data, lang):
+    print('WIP')
     return data
 
 
@@ -75,13 +116,14 @@ def stats(argument, data, lang):
 
 
 def groups(argument, data, lang):
-    print('Groups:\n')
+    print(loc.groups[lang], '\n')
     for group in unlocked_groups(data):
         print(group)
     return data
 
 
 def lang_select():
+    print('\nSelect language:\n')
     for element in loc.available_languages:
         print(element[0], ': ', element[1])
     while True:
@@ -89,7 +131,7 @@ def lang_select():
         if selection in [lang[1] for lang in loc.available_languages]:
             return selection
         else:
-            print('invalid selection')
+            print('Invalid selection')
 
 
 def unlocked_groups(data):

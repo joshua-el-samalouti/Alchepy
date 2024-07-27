@@ -14,12 +14,14 @@ def placeholder_loader(lang):
         ['Steam', 'Air', False],
         ['Lake', 'Landscape', False]
     ],
-        columns=['name', 'group', 'unlocked'])
+        columns=['name', 'group', 'unlocked']
+    )
     recipes = pd.DataFrame([
         ['Fire', 'Water', ['Steam'], False],
         ['Water', 'Water', ['Lake'], False],
     ],
-        columns=['input_1', 'input_2', 'output', 'discovered'])
+        columns=['input_1', 'input_2', 'output', 'discovered']
+    )
     return {'title': title,
             'description': description,
             'elements': elements,
