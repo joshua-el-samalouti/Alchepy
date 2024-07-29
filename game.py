@@ -50,6 +50,8 @@ def add(argument, data, lang):
     if len(input_elements) < 2:
         print(loc.too_little_elements[lang])
     elif len(input_elements) == 2:
+        # returns subset of recipes dataframe matching input elements. This should always be 0 or 1
+        # In case of 0 it tries again with inputs switched.
         match = data['recipes'][data['recipes']['input_1'] == input_elements[0]]\
             [data['recipes']['input_2'] == input_elements[1]]
         if len(match) == 1:
