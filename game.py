@@ -141,3 +141,10 @@ def lang_select():
 
 def unlocked_groups(data):
     return data['elements'].loc[data['elements']['unlocked']]['group'].unique()
+
+
+def has_elements(elements, data):
+    for element in elements:
+        if element not in data['elements'].loc[data['elements']['group'] == element]['name']:
+            return False
+    return True
