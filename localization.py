@@ -28,3 +28,12 @@ groups = {'en': 'Groups',
 
 nothing_happened = {'en': 'Nothing happened',
                     'de': 'Nichts passiert'}
+
+invalid_element = {'en': 'Invalid element',
+                   'de': 'Ungültiges Element'}
+
+debug_disabled = {'en': 'Debug disabled',
+                  'de': 'Debug deaktiviert'}
+
+new_combination = {'en': 'NEW COMBINATION',
+                   'de': 'NEUE KOMBINATION'}
