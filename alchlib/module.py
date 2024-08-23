@@ -54,31 +54,31 @@ class Module:
             print("Debug mode disabled")
 
     # marks the given element as discovered
-    def unlock_element(self, element):
+    def unlock_element(self, element: str):
         self.elements.loc[self.elements[0] == element, 2] = 1
         if self.debug_mode is True:
             print(self.elements.loc[self.elements[0] == element])
 
     # marks the given element as undiscovered
-    def lock_element(self, element):
+    def lock_element(self, element: str):
         self.elements.loc[self.elements[0] == element, 2] = 0
         if self.debug_mode is True:
             print(self.elements.loc[self.elements[0] == element])
 
     # marks the given recipe as discovered
-    def unlock_recipe(self, recipe_id):
+    def unlock_recipe(self, recipe_id: int):
         self.recipes[recipe_id][3] = 1
         if self.debug_mode is True:
             print(self.recipes[recipe_id])
 
     # marks the given recipe as undiscovered
-    def lock_recipe(self, recipe_id):
+    def lock_recipe(self, recipe_id: int):
         self.recipes[recipe_id][3] = 0
         if self.debug_mode is True:
             print(self.recipes[recipe_id])
 
     # returns the recipe id if the given elements match, returns -1 if they don't match. Considers symmetry option
-    def find_recipe(self, element_1, element_2):
+    def find_recipe(self, element_1: str, element_2: str):
         subset = self.recipes.loc[self.recipes[0] == element_1].loc[self.recipes[1] == element_2]
         # remember to add symmetry
         if subset.empty and self.options['symmetry'] == 1:
@@ -97,7 +97,7 @@ class Module:
         pass
 
     # checks if the given element is discovered or not
-    def is_unlocked_element(self, element):
+    def is_unlocked_element(self, element: str):
         subset = self.elements.loc[self.elements[2] == 1].loc[self.elements[0] == element]
         if subset.empty:
             if self.debug_mode is True:
