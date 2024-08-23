@@ -26,8 +26,19 @@ def placeholder_loader(lang):
             'description': description,
             'elements': elements,
             'recipes': recipes,
-            'info': info}
+            'info': info,
+            'version': '0.0.0'}
 
 
 def placeholder_checker():
     return True
+
+
+placeholder_content = '''Placeholder
+Cutscene
+
+Here another line'''
+
+
+def placeholder_condition():
+    pass

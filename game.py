@@ -163,3 +163,20 @@ def debugger(argument, data, lang):
     else:
         print(loc.debug_disabled[lang])
     return data
+
+
+def cutscene(content):
+    print('')
+    print(content)
+
+
+def condition_checker(conditions):
+    for condition in conditions:
+        match condition[1]:
+            case "elements_unlocked":
+                # TODO: check how many elements are unlocked
+                # TODO: set boolean to True to do result
+                return "WIP"
+
+    placeholder_condition()
+    pass
