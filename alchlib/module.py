@@ -77,17 +77,36 @@ class Module:
         if self.debug_mode is True:
             print(self.recipes[recipe_id])
 
-    # returns the recipe id if the given elements match, otherwise returns -1
-    def find_recipe_id(self, element_1, element_2):
+    # returns the recipe id if the given elements match, returns -1 if they don't match. Considers symmetry option
+    def find_recipe(self, element_1, element_2):
+        subset = self.recipes.loc[self.recipes[0] == element_1].loc[self.recipes[1] == element_2]
+        # remember to add symmetry
+        if subset.empty and self.options['symmetry'] == 1:
+            subset = self.recipes.loc[self.recipes[0] == element_2].loc[self.recipes[1] == element_1]
+        if subset.empty:
+            if self.debug_mode is True:
+                print(element_1, " and ", element_2, " does not match")
+            return -1
+        else:
+            recipe_id = int(subset.index[0])
+            if self.debug_mode is True:
+                print(element_1, " and ", element_2, " matches")
+                print("subset: ", subset)
+                print("index: ", recipe_id)
+            return recipe_id
         pass
 
     # checks if the given element is discovered or not
     def is_unlocked_element(self, element):
-        if element in self.elements.loc[self.elements[2] == 1, 0]:
+        subset = self.elements.loc[self.elements[2] == 1].loc[self.elements[0] == element]
+        if subset.empty:
             if self.debug_mode is True:
-                print(element, " is valid: ", self.elements.loc[self.elements[0] == element])
-            return True
-        else:
-            if self.debug_mode is True:
+                print(subset)
                 print(element, " is not valid")
             return False
+        else:
+            if self.debug_mode is True:
+                print(subset)
+                print(element, " is valid")
+            return True
+
