@@ -17,15 +17,15 @@ def start_module(path: str):
         if argument:
             argument = argument.group().strip()
         try:
-            data = {'add': add,
-                    'info': module_info,
-                    'quit': quit_app,
-                    'help': helper,
-                    'list': list_group,
-                    'groups': groups,
-                    'options': options,
-                    'stats': stats,
-                    'debug': debugger}[keyword](argument, module)
+            {'add': add,
+                'info': module_info,
+                'quit': quit_app,
+                'help': helper,
+                'list': list_group,
+                'groups': groups,
+                'options': options,
+                'stats': stats,
+                'debug': debugger}[keyword](argument, module)
         except KeyError:
             print("invalid command")
     pass
@@ -60,7 +60,7 @@ def groups(argument, module):
 def list_group(argument, module):
     if argument in module.get_unlocked_groups():
         print(f'\n{argument}:\n')
-        for element in module.elements.loc[module.elements[2]].loc[module.elements[1] == argument][0]:
+        for element in module.elements.loc[module.elements[2] == 1].loc[module.elements[1] == argument][0]:
             print(element)
     else:
         print(argument, " is an invalid group")
@@ -92,8 +92,8 @@ def add(argument, module):
             recipe = module.get_recipe(result_info[1])
             print(recipe[0], ' + ', recipe[1], ' = ', recipe[2])
         case 3:
+            # TODO: Only newly unlocked elements should trigger the "new element" message
             recipe = module.get_recipe(result_info[1])
-            for element in recipe[3]:
-                print('*NEW ELEMENT UNLOCKED: ', element[3])
+            print('*NEW ELEMENT UNLOCKED: ', recipe[2])
             print(recipe[0], ' + ', recipe[1], ' = ', recipe[2])
     pass

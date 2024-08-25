@@ -59,6 +59,7 @@ class Module:
         self.elements.loc[self.elements[0] == element, 2] = 1
         if self.debug_mode is True:
             print(self.elements.loc[self.elements[0] == element])
+            print("DEBUG: element ", element, "was unlocked")
 
     # marks the given element as undiscovered
     def lock_element(self, element: str):
@@ -159,10 +160,12 @@ class Module:
                     # the recipe was not discovered yet
                     self.unlock_recipe(recipe_id)
                     newly_unlocked = []
-                    for element in recipe[2]:
-                        if not self.is_unlocked_element(element):
-                            newly_unlocked.append(element)
-                            self.unlock_element(element)
+
+                    # TODO: make this part work for recipes with multiple results
+                    if not self.is_unlocked_element(recipe[2]):
+                        newly_unlocked.append(recipe[2])
+                        self.unlock_element(recipe[2])
+                        
                     if len(newly_unlocked) == 0:
                         # there are no newly unlocked elements
                         return [2, recipe_id, []]
