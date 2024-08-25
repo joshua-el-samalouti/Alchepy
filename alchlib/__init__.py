@@ -1,2 +1,2 @@
 from .module import *
-import console_app
+from .console_app import *
