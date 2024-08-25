@@ -1,4 +1,4 @@
-import alchlib.console_app
+import alchlib
 
 path = "C:/Users/joshu/Documents/Github/alchemy-modules/Covers/doodle_mafia.json"
 

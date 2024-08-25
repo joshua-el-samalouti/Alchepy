@@ -1,7 +1,7 @@
 import re
 import sys
 import warnings
-from module import *
+from .module import *
 
 
 # TODO: Debug prints
