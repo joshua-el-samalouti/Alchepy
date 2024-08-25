@@ -1,8 +1,8 @@
 import json
 import pandas as pd
 
-# TODO: refactor dataframes to work with column labels instead of indices
 
+# TODO: refactor dataframes to work with column labels instead of indices
 class Module:
 
     # upon initialization reads the given json file and assigns the data to the object attributes
@@ -126,6 +126,12 @@ class Module:
             if self.debug_mode is True:
                 print(recipe_id, " is not discovered")
             return False
+
+    def get_unlocked_groups(self):
+        group_list = []
+        for group in self.elements.loc[self.elements[2] == 1][1].unique():
+            group_list.append(group)
+        return group_list
 
     # TODO: ADD DEBUG MESSAGES
     # TODO: REFACTOR OUTPUT TO BE MORE INTUITIVE
