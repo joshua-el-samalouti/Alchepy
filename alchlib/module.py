@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 
+# TODO: refactor dataframes to work with column labels instead of indices
 
 class Module:
 
@@ -96,6 +97,11 @@ class Module:
             return recipe_id
         pass
 
+    def get_recipe(self, recipe_id):
+        if self.debug_mode is True:
+            print("Recipe #",recipe_id,": ",self.recipes[recipe_id])
+        return self.recipes[recipe_id]
+
     # checks if the given element is discovered or not
     def is_unlocked_element(self, element: str):
         subset = self.elements.loc[self.elements[2] == 1].loc[self.elements[0] == element]
@@ -110,3 +116,39 @@ class Module:
                 print(element, " is valid")
             return True
 
+    # checks if the recipe of a given ID is discovered or not
+    def is_discovered_recipe(self, recipe_id: int):
+        if self.get_recipe(recipe_id)[3] == 1:
+            if self.debug_mode is True:
+                print(recipe_id, " is discovered")
+            return True
+        else:
+            if self.debug_mode is True:
+                print(recipe_id, " is not discovered")
+            return False
+
+    # TODO: ADD DEBUG MESSAGES
+    # TODO: FINISH METHOD
+    # TODO: REFACTOR OUTPUT TO BE MORE INTUITIVE
+    # checks if given elements match and unlocks recipe and result if they do
+    # returns [-1,-1,[-1]] if elements are invalid or locked
+    # returns [0,-1,[-1]] if elements don't match
+    # returns [1, recipe_id,[-1]] if elements match, but the recipe was discovered already
+    # returns [2, recipe_id, [-1]] if elements match, the results were discovered already,
+    # but the recipe is new
+    # returns [3, recipe_id,[new_elements]] if elements match and there is one or more
+    # new elements unlocked
+    def match_elements(self, element_1: str, element_2: str):
+        unlocked_1 = self.is_unlocked_element(element_1)
+        unlocked_2 = self.is_unlocked_element(element_2)
+        if unlocked_1 and unlocked_2:
+            recipe_id = self.find_recipe(element_1, element_2)
+            if recipe_id >= 0:
+                # TODO: what happens when elements match
+                return 1
+            else:
+                # TODO: what happens when elements don't match
+                return 0
+        else:
+            # TODO: what happens when given elements are invalid or locked
+            return -1
