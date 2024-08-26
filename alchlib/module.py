@@ -100,8 +100,8 @@ class Module:
 
     def get_recipe(self, recipe_id):
         if self.debug_mode is True:
-            print("Recipe #",recipe_id,": ",self.recipes[recipe_id])
-        return self.recipes[recipe_id]
+            print("Recipe #", recipe_id, ": ", self.recipes[recipe_id])
+        return self.recipes.iloc[recipe_id]
 
     # checks if the given element is valid and discovered or not
     def is_unlocked_element(self, element: str):
@@ -162,10 +162,10 @@ class Module:
                     newly_unlocked = []
 
                     # TODO: make this part work for recipes with multiple results
-                    if not self.is_unlocked_element(recipe[2]):
-                        newly_unlocked.append(recipe[2])
-                        self.unlock_element(recipe[2])
-                        
+                    if not self.is_unlocked_element(recipe[2][0]):
+                        newly_unlocked.append(recipe[2][0])
+                        self.unlock_element(recipe[2][0])
+
                     if len(newly_unlocked) == 0:
                         # there are no newly unlocked elements
                         return [2, recipe_id, []]

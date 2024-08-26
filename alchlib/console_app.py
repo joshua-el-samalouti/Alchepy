@@ -79,21 +79,22 @@ def add(argument, module):
     input_elements = [element.strip() for element in input_elements]
     if len(input_elements) != 2:
         print("wrong number of elements")
-    result_info = module.match_elements(input_elements[0], input_elements[1])
-    match result_info[0]:
-        case -1:
-            print("One or more elements are invalid")
-        case 0:
-            print("Nothing happened")
-        case 1:
-            recipe = module.get_recipe(result_info[1])
-            print(recipe[0], ' + ', recipe[1], ' = ', recipe[2])
-        case 2:
-            recipe = module.get_recipe(result_info[1])
-            print(recipe[0], ' + ', recipe[1], ' = ', recipe[2])
-        case 3:
-            # TODO: Only newly unlocked elements should trigger the "new element" message
-            recipe = module.get_recipe(result_info[1])
-            print('*NEW ELEMENT UNLOCKED: ', recipe[2])
-            print(recipe[0], ' + ', recipe[1], ' = ', recipe[2])
-    pass
+    else:
+        result_info = module.match_elements(input_elements[0], input_elements[1])
+        match result_info[0]:
+            case -1:
+                print("One or more elements are invalid")
+            case 0:
+                print("Nothing happened")
+            case 1:
+                recipe = module.get_recipe(result_info[1])
+                print(recipe[0], ' + ', recipe[1], ' = ', recipe[2])
+            case 2:
+                recipe = module.get_recipe(result_info[1])
+                print(recipe[0], ' + ', recipe[1], ' = ', recipe[2])
+            case 3:
+                # TODO: Only newly unlocked elements should trigger the "new element" message
+                recipe = module.get_recipe(result_info[1])
+                print('*NEW ELEMENT UNLOCKED: ', recipe[2])
+                print(recipe[0], ' + ', recipe[1], ' = ', recipe[2])
+        pass
