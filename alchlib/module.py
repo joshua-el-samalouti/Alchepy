@@ -69,9 +69,9 @@ class Module:
 
     # marks the given recipe as discovered
     def unlock_recipe(self, recipe_id: int):
-        self.recipes[recipe_id][3] = 1
+        self.recipes.iloc[recipe_id][3] = 1
         if self.debug_mode is True:
-            print(self.recipes[recipe_id])
+            print(self.recipes.iloc[recipe_id])
 
     # marks the given recipe as undiscovered
     def lock_recipe(self, recipe_id: int):
@@ -160,7 +160,6 @@ class Module:
                     # the recipe was not discovered yet
                     self.unlock_recipe(recipe_id)
                     newly_unlocked = []
-
                     # TODO: make this part work for recipes with multiple results
                     if not self.is_unlocked_element(recipe[2][0]):
                         newly_unlocked.append(recipe[2][0])

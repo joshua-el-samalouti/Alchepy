@@ -63,7 +63,7 @@ def list_group(argument, module):
         for element in module.elements.loc[module.elements[2] == 1].loc[module.elements[1] == argument][0]:
             print(element)
     else:
-        print(argument, " is an invalid group")
+        print(argument, "is an invalid group")
 
 
 def debugger(argument, module):
