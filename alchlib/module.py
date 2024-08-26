@@ -2,6 +2,7 @@ import json
 import pandas as pd
 
 
+# TODO: refactor dataframes to work with column labels instead of indices
 class Module:
 
     # upon initialization reads the given json file and assigns the data to the object attributes
@@ -58,6 +59,7 @@ class Module:
         self.elements.loc[self.elements[0] == element, 2] = 1
         if self.debug_mode is True:
             print(self.elements.loc[self.elements[0] == element])
+            print("DEBUG: element ", element, "was unlocked")
 
     # marks the given element as undiscovered
     def lock_element(self, element: str):
@@ -67,9 +69,9 @@ class Module:
 
     # marks the given recipe as discovered
     def unlock_recipe(self, recipe_id: int):
-        self.recipes[recipe_id][3] = 1
+        self.recipes.iloc[recipe_id][3] = 1
         if self.debug_mode is True:
-            print(self.recipes[recipe_id])
+            print(self.recipes.iloc[recipe_id])
 
     # marks the given recipe as undiscovered
     def lock_recipe(self, recipe_id: int):
@@ -96,7 +98,12 @@ class Module:
             return recipe_id
         pass
 
-    # checks if the given element is discovered or not
+    def get_recipe(self, recipe_id):
+        if self.debug_mode is True:
+            print("Recipe #", recipe_id, ": ", self.recipes[recipe_id])
+        return self.recipes.iloc[recipe_id]
+
+    # checks if the given element is valid and discovered or not
     def is_unlocked_element(self, element: str):
         subset = self.elements.loc[self.elements[2] == 1].loc[self.elements[0] == element]
         if subset.empty:
@@ -110,3 +117,65 @@ class Module:
                 print(element, " is valid")
             return True
 
+    # checks if the recipe of a given ID is discovered or not
+    def is_discovered_recipe(self, recipe_id: int):
+        if self.get_recipe(recipe_id)[3] == 1:
+            if self.debug_mode is True:
+                print(recipe_id, " is discovered")
+            return True
+        else:
+            if self.debug_mode is True:
+                print(recipe_id, " is not discovered")
+            return False
+
+    def get_unlocked_groups(self):
+        group_list = []
+        for group in self.elements.loc[self.elements[2] == 1][1].unique():
+            group_list.append(group)
+        return group_list
+
+    # TODO: ADD DEBUG MESSAGES
+    # TODO: REFACTOR OUTPUT TO BE MORE INTUITIVE
+    # checks if given elements match and unlocks recipe and result if they do
+    # returns [-1,-1,[]] if elements are invalid or locked
+    # returns [0,-1,[]] if elements don't match
+    # returns [1, recipe_id,[]] if elements match, but the recipe was discovered already
+    # returns [2, recipe_id, []] if elements match, the results were discovered already,
+    # but the recipe is new
+    # returns [3, recipe_id,[new_elements]] if elements match and there is one or more
+    # new elements unlocked
+    # the format is [status, recipe id, [unlocked elements]]
+    def match_elements(self, element_1: str, element_2: str):
+        unlocked_1 = self.is_unlocked_element(element_1)
+        unlocked_2 = self.is_unlocked_element(element_2)
+        if unlocked_1 and unlocked_2:
+            recipe_id = self.find_recipe(element_1, element_2)
+            if recipe_id >= 0:
+                # elements match
+                recipe = self.get_recipe(recipe_id)
+                if recipe[3] == 1:
+                    # the recipe was discovered already
+                    return [1, recipe_id, []]
+                else:
+                    # the recipe was not discovered yet
+                    self.unlock_recipe(recipe_id)
+                    newly_unlocked = []
+                    # TODO: make this part work for recipes with multiple results
+                    if not self.is_unlocked_element(recipe[2][0]):
+                        newly_unlocked.append(recipe[2][0])
+                        self.unlock_element(recipe[2][0])
+
+                    if len(newly_unlocked) == 0:
+                        # there are no newly unlocked elements
+                        return [2, recipe_id, []]
+                    else:
+                        # there are newly unlocked elements
+                        return [3, recipe_id, newly_unlocked]
+            else:
+                # elements don't match
+                return [0, -1, []]
+        else:
+            # one or more elements are invalid or locked
+            # no information about which element is invalid is returned
+            # for information about this other methods have to be used additionally
+            return [-1, -1, []]
