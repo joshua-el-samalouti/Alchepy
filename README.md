@@ -32,6 +32,28 @@ The JSON file has to contain an object that contains the following attributes:
 - "version": string (version of Alchepy the module was developed for)
 - "author": string (name of the module author)
 
+## How do I use the console application? 
+The console application first requires you to input the path of a module JSON file to load.
+It then has the following commands (square brackets are omitted and signal variables):
+#### add \[element name\] + \[element name\]
+- adds any amount of elements, if the combination is valid it marks the recipe as discovered and unlocks the result elements
+#### debug
+- toggles debug mode on/off. Currently debug mode simply gives additional information when using commands
+#### groups
+- lists currently unlocked groups
+#### help
+- WIP command
+#### info
+- prints the info text of the current module
+#### list \[group name\]
+- lists the currently unlocked elements in an unlocked group
+#### options
+- WIP command
+#### quit
+- closes the application
+#### stats
+- WIP command
+
 ## What are the plans for Alchepy's future?
 - A sample module to play and get a feel for the library
 - Recipes with more than two input elements
