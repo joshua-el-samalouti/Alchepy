@@ -28,7 +28,6 @@ def start_module(path: str):
                 'debug': debugger}[keyword](argument, module)
         except KeyError:
             print("invalid command")
-    pass
 
 
 def quit_app(argument, module):
